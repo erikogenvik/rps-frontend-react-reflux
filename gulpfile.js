@@ -7,6 +7,7 @@ var browserify    = require('browserify');
 var preprocessify = require('preprocessify');
 var runSequence   = require('run-sequence');
 var domain        = require('domain');
+var babelify      = require('babelify');
 
 var env           = 'dev';
 var webserver     = false;
@@ -44,7 +45,9 @@ gulp.task('scripts', function() {
       entries: [filePath],
       extensions: extensions,
       debug: env === 'dev'
-    }).transform(preprocessify({
+    })
+    .transform(babelify)
+    .transform(preprocessify({
       env: env
     }, {
       includeExtensions: extensions
