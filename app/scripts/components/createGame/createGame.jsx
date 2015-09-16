@@ -1,10 +1,10 @@
 import React from 'react';
 import GameActions from '../../actions/gameActions'
+import TextField from 'material-ui/lib/text-field'
 
 class CreateGame extends React.Component {
   _handleSubmit() {
-    let userId = React.findDOMNode(this.refs.userId).value.trim();
-    GameActions.createGame(userId);
+    GameActions.createGame(this.state.userId);
     return false;
   }
 
@@ -12,7 +12,7 @@ class CreateGame extends React.Component {
     return (
       <form onSubmit={this._handleSubmit.bind(this)}>
         <h3>Create game</h3>
-        User name: <input type="text" ref="userId" />
+        <TextField floatingLabelText="User name" ref="userId" onChange={event => this.setState({userId: event.target.value})}/>
       </form>
     );
   }
