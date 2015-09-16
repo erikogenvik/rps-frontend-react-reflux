@@ -3,7 +3,9 @@ import GameActions from '../../actions/gameActions'
 
 class CreateGame extends React.Component {
   _handleSubmit() {
-    GameActions.createGame(this.refs.userId.value);
+    let userId = React.findDOMNode(this.refs.userId).value.trim();
+    GameActions.createGame(userId);
+    return false;
   }
 
   render() {
