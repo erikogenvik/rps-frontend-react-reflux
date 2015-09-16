@@ -1,5 +1,6 @@
 import React from 'react';
 import GameList from './gamelist/gamelist';
+import CreateGame from './createGame/createGame';
 
 class Home extends React.Component {
   render() {
@@ -8,6 +9,8 @@ class Home extends React.Component {
         <h1>RPS</h1>
         <p>Games</p>
         <GameList />
+        <br />
+        <CreateGame />
       </div>
     );
   }

@@ -3,7 +3,9 @@ import Reflux from 'reflux';
 import GameStore from '../../stores/gameStore';
 import Game from '../game/game'
 
-class GameList extends React.Component {constructor(props) {
+class GameList extends React.Component {
+
+  constructor(props) {
     super(props);
     this.state = {
       gamestore: []
@@ -27,7 +29,6 @@ class GameList extends React.Component {constructor(props) {
           {this.state.gamestore.map(game => (
             <li>{game.gameId}</li>
           ))}
-          <li><Game/></li>
         </ul>
       );
     } else {

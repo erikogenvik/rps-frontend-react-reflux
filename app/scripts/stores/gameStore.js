@@ -3,29 +3,44 @@ import $ from 'jquery';
 import GameActions from '../actions/gameActions';
 
 let GameStore = Reflux.createStore({
-    listenables: [GameActions],
-    gamelist: [],
-    sourceUrl: 'http://localhost:8080/graphql',
+  listenables: [GameActions],
+  gamelist: [],
+  sourceUrl: 'http://localhost:8080/graphql',
 
-    init: function() {
-        this.fetchList();
-    },
+  sendQuery: function(query) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: this.sourceUrl,
+        type: 'POST',
+        processData: false,
+        contentType: 'application/json',
+        data: query,
+        cache: false,
+        success: data => {
+          resolve(data);
+        }
+      });
+    })
+  },
 
-    fetchList: function() {
-        $.ajax({
-            url: this.sourceUrl,
-            type: 'POST',
-            processData: false,
-            contentType: 'application/json',
-            data: 'query Q {games{gameId, createdBy, loser, winner, state, moves{user, move}}',
-            cache: false,
-            success: data => {
-                console.log('fetch complete');
-                this.gamelist = data.games;
-                this.trigger(this.gamelist);
-            }
-        });
-    }
+  init: function() {
+    this.fetchList();
+  },
+
+  createGame: function(userId) {
+    this.sendQuery(`mutation M {createGame(userId: "${userId}"){gameId, createdBy, loser, winner, state, moves{user, move}}`)
+    .then(data => {
+      this.fetchList();
+    });
+  },
+
+  fetchList: function() {
+    this.sendQuery('query Q {games{gameId, createdBy, loser, winner, state, moves{user, move}}')
+    .then(data => {
+      this.gamelist = data.games;
+      this.trigger(this.gamelist);
+    });
+  }
 });
 
 export default GameStore;
