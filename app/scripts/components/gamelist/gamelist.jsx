@@ -1,13 +1,14 @@
 import React from 'react';
+import Game from '../game/game'
 
-class Game extends React.Component {
+class GameList extends React.Component {
   render() {
     return (
-      <div>
-        A game
-      </div>
+      <ul>
+        <li><Game /></li>
+      </ul>
     );
   }
 }
 
-export default Game;
+export default GameList;
