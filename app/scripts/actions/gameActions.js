@@ -4,4 +4,4 @@ let GameActions = Reflux.createActions([
   'fetchList'
 ]);
 
-module.exports = GameActions;
+export default GameActions;

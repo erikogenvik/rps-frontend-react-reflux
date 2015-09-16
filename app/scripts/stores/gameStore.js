@@ -19,7 +19,6 @@ let GameStore = Reflux.createStore({
             contentType: 'application/json',
             data: 'query Q {games{gameId, createdBy, loser, winner, state, moves{user, move}}',
             cache: false,
-            context: this,
             success: data => {
                 console.log('fetch complete');
                 this.gamelist = data.games;
@@ -29,4 +28,4 @@ let GameStore = Reflux.createStore({
     }
 });
 
-module.exports = GameStore;
+export default GameStore;

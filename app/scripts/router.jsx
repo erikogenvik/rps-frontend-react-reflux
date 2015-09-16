@@ -12,8 +12,10 @@ let routes = (
 	</Route>
 );
 
-export function start() {
+let start = function() {
 	Router.run(routes, Handler => {
 		React.render(<Handler />, document.getElementById('content'));
 	});
-}
+};
+
+export default start;
