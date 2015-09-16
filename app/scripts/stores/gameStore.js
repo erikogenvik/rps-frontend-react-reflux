@@ -1,6 +1,7 @@
 import Reflux from 'reflux';
 import $ from 'jquery';
 import GameActions from '../actions/gameActions';
+import UserStore from './userStore';
 
 let GameStore = Reflux.createStore({
   listenables: [GameActions],
@@ -24,18 +25,19 @@ let GameStore = Reflux.createStore({
   },
 
   init: function() {
+    this.listenTo(UserStore, userId => this.userId = userId);
     this.fetchList();
   },
 
   makeMove: function(gameId, move) {
-    this.sendQuery(`mutation M {makeMove(gameId: "${gameId}", move: "${move}", userId: "temp"){gameId, createdBy, loser, winner, state, moves{user, move}}`)
+    this.sendQuery(`mutation M {makeMove(gameId: "${gameId}", move: "${move}", userId: "${this.userId}"){gameId, createdBy, loser, winner, state, moves{user, move}}`)
     .then(data => {
       this.fetchList();
     });
   },
 
-  createGame: function(userId) {
-    this.sendQuery(`mutation M {createGame(userId: "${userId}"){gameId, createdBy, loser, winner, state, moves{user, move}}`)
+  createGame: function() {
+    this.sendQuery(`mutation M {createGame(userId: "${this.userId}"){gameId, createdBy, loser, winner, state, moves{user, move}}`)
     .then(data => {
       this.fetchList();
     });

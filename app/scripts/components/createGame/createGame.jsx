@@ -1,6 +1,6 @@
 import React from 'react';
 import GameActions from '../../actions/gameActions'
-import TextField from 'material-ui/lib/text-field'
+import RaisedButton from 'material-ui/lib/raised-button'
 
 class CreateGame extends React.Component {
   _handleSubmit() {
@@ -10,10 +10,7 @@ class CreateGame extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this._handleSubmit.bind(this)}>
-        <h3>Create game</h3>
-        <TextField floatingLabelText="User name" ref="userId" onChange={event => this.setState({userId: event.target.value})}/>
-      </form>
+      <RaisedButton label="Create game" onClick={() => GameActions.createGame()}/>
     );
   }
 }
