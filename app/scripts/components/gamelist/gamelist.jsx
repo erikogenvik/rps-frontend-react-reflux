@@ -2,6 +2,8 @@ import React from 'react';
 import Reflux from 'reflux';
 import GameStore from '../../stores/gameStore';
 import Game from '../game/game'
+import List from 'material-ui/lib/lists/list';
+
 
 class GameList extends React.Component {
 
@@ -25,11 +27,11 @@ class GameList extends React.Component {
   render() {
     if (this.state.gamestore && this.state.gamestore.length > 0) {
       return (
-        <ul>
+        <List>
           {this.state.gamestore.map(game => (
-            <li>{game.gameId}</li>
+            <Game game={game} />
           ))}
-        </ul>
+        </List>
       );
     } else {
       return (
