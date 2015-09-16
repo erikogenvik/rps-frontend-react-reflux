@@ -27,6 +27,13 @@ let GameStore = Reflux.createStore({
     this.fetchList();
   },
 
+  makeMove: function(gameId, move) {
+    this.sendQuery(`mutation M {makeMove(gameId: "${gameId}", move: "${move}", userId: "temp"){gameId, createdBy, loser, winner, state, moves{user, move}}`)
+    .then(data => {
+      this.fetchList();
+    });
+  },
+
   createGame: function(userId) {
     this.sendQuery(`mutation M {createGame(userId: "${userId}"){gameId, createdBy, loser, winner, state, moves{user, move}}`)
     .then(data => {

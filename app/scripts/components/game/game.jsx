@@ -1,18 +1,42 @@
 import React from 'react';
-import ListItem from 'material-ui/lib/lists/list-item';
+import SelectField from 'material-ui/lib/select-field';
+
+import GameActions from '../../actions/gameActions'
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+
+
   render() {
-    return (
-      <ListItem
-      primaryText={'Created by : ' + this.props.game.createdBy}
-      secondaryText={
-        <p>
-          <span style={{color: 'black'}}>Status</span><br/>
+    let moves = [{id:'rock', name: 'Rock'}, {id: 'paper', name: 'Paper'}, {id:'scissor', name: 'Scissor'}];
+
+    let Extra = (<p>
+        <span style={{color: 'black'}}>Status: </span>
+        {this.props.game.state}
+      </p>);
+
+    if (this.state.expanded) {
+      Extra = (<p>
+          <span style={{color: 'black'}}>Status: </span>
           {this.props.game.state}
-        </p>
-      }
-      secondaryTextLines={2} />
+          <br />
+          <select onChange={event => {if (event.target.value) {GameActions.makeMove(this.props.game.gameId, event.target.value);}}}>
+            <option>Make a move</option>
+            <option value="rock">Rock</option>
+            <option value="paper">Paper</option>
+            <option value="scissor">Scissor</option>
+          </select>
+        </p>);
+    }
+    return (
+      <li onClick={() => this.setState({expanded: true})}>
+        <p>{'Created by : ' + this.props.game.createdBy}</p>
+        {Extra}
+      </li>
     );
   }
 }

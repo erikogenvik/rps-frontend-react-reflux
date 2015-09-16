@@ -2,7 +2,8 @@ import Reflux from 'reflux';
 
 let GameActions = Reflux.createActions([
   'fetchList',
-  'createGame'
+  'createGame',
+  'makeMove'
 ]);
 
 export default GameActions;

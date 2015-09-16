@@ -27,11 +27,11 @@ class GameList extends React.Component {
   render() {
     if (this.state.gamestore && this.state.gamestore.length > 0) {
       return (
-        <List>
+        <ul>
           {this.state.gamestore.map(game => (
-            <Game game={game} />
+            <Game game={game} key={game.gameId}/>
           ))}
-        </List>
+        </ul>
       );
     } else {
       return (
