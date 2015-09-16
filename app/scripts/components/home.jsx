@@ -1,15 +1,13 @@
 import React from 'react';
+import GameList from './gamelist/gamelist';
 
 class Home extends React.Component {
   render() {
     return (
       <div className="hero-unit">
-        <h1>'Allo, 'Allo!</h1>
-        <p>You now have</p>
-        <ul>
-            <li>ReactJS Reflux Boilerplate</li>
-            <li>Sass with Compass</li>
-        </ul>
+        <h1>RPS</h1>
+        <p>Games</p>
+        <GameList />
       </div>
     );
   }
