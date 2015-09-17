@@ -46,12 +46,12 @@ gulp.task('scripts', function() {
       extensions: extensions,
       debug: env === 'dev'
     })
-    .transform(babelify)
     .transform(preprocessify({
       env: env
     }, {
       includeExtensions: extensions
-    })).transform('reactify')
+    }))
+    .transform(babelify)
     .bundle()
       .pipe(source('app.js'))
       .pipe(gulp.dest('.tmp/scripts/bundle'))
