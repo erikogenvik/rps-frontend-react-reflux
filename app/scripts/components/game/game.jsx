@@ -24,15 +24,24 @@ class Game extends React.Component {
     let moves = [{id:'rock', name: 'Rock'}, {id: 'paper', name: 'Paper'}, {id:'scissor', name: 'Scissor'}];
 
     let Extra = null;
-    if (this.props.game.state === 'inProgress') {
+    if (this.props.game.state === 'created') {
       let isUser = this.state.userId;
-      Extra = (<select disabled={!isUser} onChange={event => {if (event.target.value) {GameActions.makeMove(this.props.game.gameId, event.target.value);}}}>
-        <option>Make a move</option>
-        <option value="rock">Rock</option>
-        <option value="paper">Paper</option>
-        <option value="scissor">Scissor</option>
-      </select>
-    );
+      Extra = (<button disabled={!isUser} onClick={event => {GameActions.joinGame(this.props.game.gameId);}}>
+          Join
+        </button>
+      );
+    } else if (this.props.game.state === 'waiting' || this.props.game.state === 'ready') {
+      let isUser = this.state.userId;
+      if (this.state.userId === this.props.game.player1 || this.state.userId === this.props.game.player2) {
+        Extra = (<select disabled={!isUser} onChange={event => {if (event.target.value) {GameActions.makeMove(this.props.game.gameId, event.target.value);}}}>
+            <option>Make a move</option>
+            <option value="rock">Rock</option>
+            <option value="paper">Paper</option>
+            <option value="scissor">Scissor</option>
+          </select>);
+      } else {
+        Extra = (<span>You're not competing in this game.</span>);
+      }
     } else if (this.props.game.state === 'won') {
       Extra = (
         <span>
@@ -58,7 +67,7 @@ class Game extends React.Component {
     // }
     return (
       <li onClick={() => this.setState({expanded: true})}>
-        <p>{'Created by : ' + this.props.game.createdBy}</p>
+        <p>{'Created by : ' + this.props.game.player1}</p>
         <p>
             <span style={{color: 'black'}}>Status: </span>{this.props.game.state}
         </p>

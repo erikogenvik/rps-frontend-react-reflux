@@ -6,21 +6,22 @@ import UserStore from './userStore';
 let GameStore = Reflux.createStore({
   listenables: [GameActions],
   gamelist: [],
-  sourceUrl: 'http://localhost:8080/graphql',
+  sourceUrl: 'https://6qd3f6gwq4.execute-api.eu-west-1.amazonaws.com/dev/',
 
-  sendQuery: function(query) {
+  sendQuery: function(path, data, method) {
+    method = method ? method : 'GET';
+
     return new Promise((resolve, reject) => {
-      $.ajax({
-        url: this.sourceUrl,
-        type: 'POST',
-        processData: false,
+      let request = {
+        url: this.sourceUrl + path,
+        type: method,
         contentType: 'application/json',
-        data: query,
-        cache: false,
-        success: data => {
-          resolve(data);
+        data: JSON.stringify(data),
+        success: response => {
+          resolve(response);
         }
-      });
+      };
+      $.ajax(request);
     })
   },
 
@@ -30,23 +31,31 @@ let GameStore = Reflux.createStore({
   },
 
   makeMove: function(gameId, move) {
-    this.sendQuery(`mutation M {makeMove(gameId: "${gameId}", move: "${move}", userId: "${this.userId}"){gameId, createdBy, loser, winner, state, moves{user, move}}}`)
+    this.sendQuery(`games/${gameId}`, {email: this.userId, move: move}, 'POST')
     .then(data => {
       this.fetchList();
     });
   },
 
   createGame: function() {
-    this.sendQuery(`mutation M {createGame(userId: "${this.userId}"){gameId, createdBy, loser, winner, state, moves{user, move}}}`)
+    this.sendQuery(`games`, {email: this.userId}, 'POST')
     .then(data => {
       this.fetchList();
     });
   },
 
-  fetchList: function() {
-    this.sendQuery('query Q {games{gameId, createdBy, loser, winner, state, moves{user, move}}}')
+  joinGame: function(gameId) {
+    this.sendQuery(`games/${gameId}`, {email: this.userId}, 'PUT')
     .then(data => {
-      this.gamelist = data.games;
+      this.fetchList();
+    });
+
+  },
+
+  fetchList: function() {
+    this.sendQuery('games')
+    .then(data => {
+      this.gamelist = data;
       this.trigger(this.gamelist);
     });
   }
