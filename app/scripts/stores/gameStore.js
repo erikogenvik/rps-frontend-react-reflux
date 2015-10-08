@@ -2,11 +2,12 @@ import Reflux from 'reflux';
 import $ from 'jquery';
 import GameActions from '../actions/gameActions';
 import UserStore from './userStore';
+import BackendStore from './backendStore';
 
 let GameStore = Reflux.createStore({
   listenables: [GameActions],
-  gamelist: [],
-  sourceUrl: 'https://6qd3f6gwq4.execute-api.eu-west-1.amazonaws.com/dev/',
+  gamelist: null,
+  sourceUrl: '',
 
   sendQuery: function(path, data, method) {
     method = method ? method : 'GET';
@@ -27,7 +28,15 @@ let GameStore = Reflux.createStore({
 
   init: function() {
     this.listenTo(UserStore, userId => this.userId = userId);
-    this.fetchList();
+    this.listenTo(BackendStore, url => {
+      this.sourceUrl = url;
+      if (url) {
+        this.fetchList();
+      } else {
+        this.gamelist = null;
+        this.trigger(this.gamelist);
+      }
+    });
   },
 
   makeMove: function(gameId, move) {
