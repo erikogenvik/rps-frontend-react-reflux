@@ -8,6 +8,9 @@ var preprocessify = require('preprocessify');
 var runSequence   = require('run-sequence');
 var domain        = require('domain');
 var babelify      = require('babelify');
+var getBabelRelayPlugin = require('babel-relay-plugin');
+var schemaData    = require('./data/schema.json');
+var babelRelayPlugin = getBabelRelayPlugin(schemaData);
 
 var env           = 'dev';
 var webserver     = false;
@@ -51,7 +54,7 @@ gulp.task('scripts', function() {
     }, {
       includeExtensions: extensions
     }))
-    .transform(babelify)
+    .transform(babelify.configure({optional: ["es7.classProperties"], plugins: [babelRelayPlugin]}))
     .bundle()
       .pipe(source('app.js'))
       .pipe(gulp.dest('.tmp/scripts/bundle'))

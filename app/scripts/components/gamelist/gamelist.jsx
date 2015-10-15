@@ -1,36 +1,15 @@
 import React from 'react';
-import Reflux from 'reflux';
-import GameStore from '../../stores/gameStore';
-import Game from '../game/game'
-import List from 'material-ui/lib/lists/list';
+//import Game from '../game/game'
+import Relay from 'react-relay';
 
 
 class GameList extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      gamestore: []
-    };
-  }
-
-  componentDidMount() {
-    this.unsubscribe = GameStore.listen(gamestore => this.setState({
-      gamestore: gamestore
-    }));
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
   render() {
-    if (this.state.gamestore && this.state.gamestore.length > 0) {
+    if (this.props.viewer) {
       return (
         <ul>
-          {this.state.gamestore.map(game => (
-            <Game game={game} key={game.gameId}/>
-          ))}
+          {this.props.viewer.games.edges.map(edge => (<li>Game: {edge.node.gameId}</li>))}
         </ul>
       );
     } else {
@@ -41,4 +20,20 @@ class GameList extends React.Component {
   }
 }
 
-export default GameList;
+let relayed = Relay.createContainer(GameList, {
+  initialVariables: {
+  },
+  fragments: {
+    viewer: () => Relay.QL`
+      fragment on Viewer {games(first: 10) {
+        edges {
+          node {
+            gameId
+          }
+        }
+      }
+    }`,
+  },
+});
+
+export default relayed;

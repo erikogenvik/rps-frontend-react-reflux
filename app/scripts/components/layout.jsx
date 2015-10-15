@@ -1,20 +1,28 @@
 import React from 'react';
-import AppBar from 'material-ui/lib/app-bar';
-import mui from 'material-ui';
 
-//let ThemeManager = mui.Styles.ThemeManager();
 
 class Layout extends React.Component {
-  render() {
-    return (
-      <div>
-        <div className="App">
-          {this.props.children}
-        </div>
-      </div>
-    );
-  }
-}
-
+//   // Important!
+//   getChildContext() {
+//     return {
+//       muiTheme: ThemeManager.getCurrentTheme()
+//     };
+//   }
+//
+//   render() {
+//     return (
+//       <div>
+//         <div className="App">
+//           <Router.RouteHandler/>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
+//
+// // Important!
+// Layout.childContextTypes = {
+//   muiTheme: React.PropTypes.object
+};
 
 export default Layout;

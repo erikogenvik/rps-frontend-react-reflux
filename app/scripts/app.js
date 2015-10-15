@@ -1,6 +1,9 @@
 import Router from './router';
-import GameActions from './actions/gameActions'
+import Relay from 'react-relay';
 
-//setInterval(() => GameActions.fetchList(), 5000);
+
+Relay.injectNetworkLayer(
+  new Relay.DefaultNetworkLayer('http://localhost:8080/relay')
+);
 
 Router();
