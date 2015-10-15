@@ -2,22 +2,51 @@ import React from 'react';
 import GameList from './gamelist/gamelist';
 import CreateGame from './createGame/createGame';
 import UserName from './userName/userName';
+import Relay from 'react-relay';
 
 class Home extends React.Component {
 
+  static propTypes = {
+    viewer: React.PropTypes.object.isRequired
+  };
+
+  static queries = {
+    viewer: (Component) => Relay.QL`query GamesQuery {
+        viewer {
+          ${Component.getFragment('viewer')}
+        },
+      }
+    `,
+  };
+
   render() {
+
+    const {viewer} = this.props;
+
     return (
-      <Paper className="hero-unit" zDepth={1}>
+      <div>
 
         <h1>RPS</h1>
         <UserName />
         <br/>
         <CreateGame/>
         <p>Games</p>
-        <GameList/>
-      </Paper>
+        <GameList viewer={viewer}/>
+      </div>
     );
   }
 }
 
-export default Home;
+let relayed = Relay.createContainer(Home, {
+  initialVariables: {
+  },
+  fragments: {
+    viewer: () => Relay.QL`
+      fragment on Viewer {
+        ${GameList.getFragment('viewer')}
+      }
+    `
+  },
+});
+
+export default relayed;

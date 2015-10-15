@@ -1,15 +1,19 @@
 import React from 'react';
-//import Game from '../game/game'
+import Game from '../game/game'
 import Relay from 'react-relay';
 
 
 class GameList extends React.Component {
 
   render() {
-    if (this.props.viewer) {
+    const {viewer} = this.props;
+
+    if (viewer) {
       return (
         <ul>
-          {this.props.viewer.games.edges.map(edge => (<li>Game: {edge.node.gameId}</li>))}
+          {viewer.games.edges.map(edge => (
+            <Game game={edge.node} key={edge.node.gameId}/>
+          ))}
         </ul>
       );
     } else {
@@ -28,7 +32,8 @@ let relayed = Relay.createContainer(GameList, {
       fragment on Viewer {games(first: 10) {
         edges {
           node {
-            gameId
+            gameId,
+            ${Game.getFragment('game')}
           }
         }
       }
