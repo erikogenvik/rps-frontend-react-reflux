@@ -19,15 +19,13 @@ class CreateGame extends React.Component {
     this.unsubscribe();
   }
 
-
-  _handleSubmit() {
-    Relay.Store.update(new LikeStoryMutation({userId: this.state.userId}));
-    return false;
-  }
-
   render() {
+    let boundClick = () => {
+      Relay.Store.update(new CreateGameMutation({userId: this.state.userId}));
+      return false;
+    }
     return (
-      <button label="Create game" disabled={!this.state.userId} onClick={() => _handleSubmit()}>Create game</button>
+      <button label="Create game" disabled={!this.state.userId} onClick={boundClick}>Create game</button>
     );
   }
 }

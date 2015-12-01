@@ -29,15 +29,16 @@ let relayed = Relay.createContainer(GameList, {
   },
   fragments: {
     viewer: () => Relay.QL`
-      fragment on Viewer {games(first: 10) {
-        edges {
-          node {
-            gameId,
-            ${Game.getFragment('game')}
+      fragment on Viewer {
+        games(first: 10) {
+          edges {
+            node {
+              gameId,
+              ${Game.getFragment('game')}
+            }
           }
         }
-      }
-    }`,
+      }`,
   },
 });
 
