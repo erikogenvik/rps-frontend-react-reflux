@@ -11,7 +11,11 @@ class CreateGameMutation extends Relay.Mutation {
     return Relay.QL`
       fragment on CreateGamePayload {
         game {
-          gameId
+          gameId,
+          state,
+          winner,
+          loser,
+          createdBy
         }
       }
     `;
